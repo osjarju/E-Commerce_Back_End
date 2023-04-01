@@ -1,58 +1,38 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// The `/api/products` endpoint
 
 // get all products
 router.get('/', (req, res) => {
   // find all products
-  // be sure to include its associated Category and Tag data
   Product.findAll({
     include: {
-      model: Product,
-      attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      model: Category,
+      attributes: ['id', 'category_name']
     }
   })
-    .then(productData => {
-      if (!productData) {
-        res.status(404).json({
-          message: 'No categories found'
-        });
-        return;
-      }
-      res.json(productData);
-    })
+    .then(productData => res.json(productData))
     .catch(err => {
       console.log(err);
-      res.status(500).json(err)
+      res.status(500).json(err);
     });
 });
 
 //GET ROUTE
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
   Product.findOne({
     where: {
       id: req.params.id
     },
     include: {
-      Product,
-      attributes: ['id', 'product_name', 'price', 'stock']
+      model: Product,
+      attributes: ['id', 'category_name', 'price', 'stock']
     }
   })
-    .then(productData => {
-      if (productData) {
-        res.status(404).json({
-          message: 'No categories found'
-        });
-        return;
-      }
-      res.json(productData);
-    })
+    .then(productData => res.json(productData))
     .catch(err => {
       console.log(err);
-      res.status(500).json(err)
+      res.status(500).json(err);
     });
 });
 
@@ -90,14 +70,19 @@ router.post('/', (req, res) => {
 
 // update product
 router.put('/:id', (req, res) => {
-  // update product data
   Product.update(req.body, {
     where: {
       id: req.params.id,
-    },
-
+    }
   })
-    .then((product) => {
+    .then((productData) => {
+      if (!productData) {
+        res.status(404).json({
+          message: 'No product found with this ID'
+        });
+        return;
+      }
+      res.json(productData);
       // find all associated tags from ProductTag
       return ProductTag.findAll({ where: { product_id: req.params.id } });
     })
@@ -127,11 +112,11 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
       res.status(400).json(err);
     });
 });
 
+//DELETE
 router.delete('/:id', (req, res) => {
   Product.destroy({
     where: {
@@ -139,7 +124,7 @@ router.delete('/:id', (req, res) => {
     }
   })
     .then(productData => {
-      if (productData) {
+      if (!productData) {
         res.status(404).json({
           message: 'No category matches ID'
         });

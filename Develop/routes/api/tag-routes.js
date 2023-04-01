@@ -16,8 +16,8 @@ router.get('/', (req, res) => {
     });
 });
 
+//GET ROUTE
 router.get('/:id', (req, res) => {
-  // find a single tag by its `id`
   Tag.findOne({
     where: {
       id: req.params.id
@@ -34,8 +34,8 @@ router.get('/:id', (req, res) => {
     });
 });
 
+//POST ROUTE
 router.post('/', (req, res) => {
-  // create a new tag
   Tag.create({
     tag_name: req.body.tag_name
   })
@@ -46,8 +46,8 @@ router.post('/', (req, res) => {
     });
 });
 
+//PUT ROUTE
 router.put('/:id', (req, res) => {
-  // update a tag's name by its `id` value
   Tag.update(req.body, {
     where: {
       id: req.params.id
@@ -68,8 +68,8 @@ router.put('/:id', (req, res) => {
     });
 });
 
+//DELETE
 router.delete('/:id', (req, res) => {
-  // delete on tag by its `id` value
   Tag.destroy({
     where: {
       id: req.params.id

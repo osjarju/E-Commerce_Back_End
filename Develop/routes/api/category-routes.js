@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
-// The `/api/categories` endpoint
-
 router.get('/', (req, res) => {
   // find all categories
   Category.findAll({
@@ -11,17 +9,10 @@ router.get('/', (req, res) => {
       attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
     }
   })
-    // be sure to include its associated Products
-    .then(categoryData => {
-      if (!categoryData) {
-        res.status(404).json({ message: 'No categories found' });
-        return;
-      }
-      res.json(categoryData);
-    })
+    .then(categoryData => res.json(categoryData))
     .catch(err => {
       console.log(err);
-      res.status(500).json(err)
+      res.status(500).json(err);
     });
 });
 
@@ -36,18 +27,10 @@ router.get('/:id', (req, res) => {
       attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
     }
   })
-    .then(categoryData => {
-      if (categoryData) {
-        res.status(404).json({
-          message: 'No categories found'
-        });
-        return;
-      }
-      res.json(categoryData);
-    })
+    .then(categoryData => res.json(categoryData))
     .catch(err => {
       console.log(err);
-      res.status(500).json(err)
+      res.status(500).json(err);
     });
 });
 
@@ -72,7 +55,7 @@ router.put('/:id', (req, res) => {
     }
   })
     .then(categoryData => {
-      if (categoryData) {
+      if (!categoryData) {
         res.status(404).json({
           message: 'No category matches that ID'
         });
@@ -94,7 +77,7 @@ router.delete('/:id', (req, res) => {
     }
   })
     .then(categoryData => {
-      if (categoryData) {
+      if (!categoryData) {
         res.status(404).json({
           message: 'No category matches that ID'
         });
