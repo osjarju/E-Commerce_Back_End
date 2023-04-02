@@ -1,5 +1,4 @@
 const { Product } = require('../models');
-// const db = require('../db');
 
 const productData = [
   {

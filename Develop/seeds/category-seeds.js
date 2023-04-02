@@ -1,5 +1,4 @@
 const { Category } = require('../models');
-// const db = require('../db');
 
 const categoryData = [
   {

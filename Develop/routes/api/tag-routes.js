@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { Tag, Product, ProductTag } = require('../../models');
 
+//GET ALL TAGS
 router.get('/', (req, res) => {
-  // find all tags
   Tag.findAll({
     include: {
       model: Product,
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     });
 });
 
-//GET ROUTE
+//GET TAG BY ID
 router.get('/:id', (req, res) => {
   Tag.findOne({
     where: {
@@ -34,7 +34,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-//POST ROUTE
+//POST TAG
 router.post('/', (req, res) => {
   Tag.create({
     tag_name: req.body.tag_name
