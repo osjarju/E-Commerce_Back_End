@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
     });
 });
 
-//PUT ROUTE
+//UPDATE TAG
 router.put('/:id', (req, res) => {
   Tag.update(req.body, {
     where: {
@@ -68,7 +68,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-//DELETE
+//DELETE TAG
 router.delete('/:id', (req, res) => {
   Tag.destroy({
     where: {
